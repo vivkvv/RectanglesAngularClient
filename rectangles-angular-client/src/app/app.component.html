@@ -1,0 +1,112 @@
+<div class="container">
+  <div class="svg-container">
+    <div style="text-align: center; margin-top: 50px">
+      <h1>Enter Segment Coordinates</h1>
+      <input type="number" [(ngModel)]="x1" placeholder="x1" />
+      <input type="number" [(ngModel)]="y1" placeholder="y1" />
+      <input type="number" [(ngModel)]="x2" placeholder="x2" />
+      <input type="number" [(ngModel)]="y2" placeholder="y2" />
+      <button (click)="checkIntersections()">Check</button>
+    </div>
+
+    <div style="text-align: center">
+      <svg
+        [attr.width]="width"
+        [attr.height]="height"
+        style="border: 1px solid black"
+      >
+        <polygon
+          *ngFor="let rect of rectangles"
+          [attr.points]="scaledPoints(rect)"
+          [attr.stroke]="
+            rect.rectangleid === selectedRectangleId ? 'green' : 'blue'
+          "
+          fill="transparent"
+          stroke-width="2"
+        ></polygon>
+
+        <line
+          [attr.x1]="scaleX((minX + maxX) / 2)"
+          [attr.y1]="0"
+          [attr.x2]="scaleX((minX + maxX) / 2)"
+          [attr.y2]="height"
+          stroke="black"
+          stroke-width="1"
+        ></line>
+        <line
+          [attr.x1]="0"
+          [attr.y1]="scaleY((minY + maxY) / 2)"
+          [attr.x2]="width"
+          [attr.y2]="scaleY((minY + maxY) / 2)"
+          stroke="black"
+          stroke-width="1"
+        ></line>
+
+        <text
+          [attr.x]="scaleX(maxX) - 25"
+          [attr.y]="scaleY((minY + maxY) / 2) + 15"
+          font-family="sans-serif"
+          font-size="10px"
+        >
+          {{ maxX }}
+        </text>
+        <text
+          [attr.x]="scaleX(minX) + 5"
+          [attr.y]="scaleY((minY + maxY) / 2) + 15"
+          font-family="sans-serif"
+          font-size="10px"
+        >
+          {{ minX }}
+        </text>
+        <text
+          [attr.x]="scaleX((minX + maxX) / 2) + 5"
+          [attr.y]="scaleY(maxY) + 15"
+          font-family="sans-serif"
+          font-size="10px"
+        >
+          {{ maxY }}
+        </text>
+        <text
+          [attr.x]="scaleX((minX + maxX) / 2) + 5"
+          [attr.y]="scaleY(minY) - 5"
+          font-family="sans-serif"
+          font-size="10px"
+        >
+          {{ minY }}
+        </text>
+
+        <line
+          [attr.x1]="scaleX(segment.x1)"
+          [attr.y1]="scaleY(segment.y1)"
+          [attr.x2]="scaleX(segment.x2)"
+          [attr.y2]="scaleY(segment.y2)"
+          stroke="red"
+          stroke-width="2"
+        ></line>
+      </svg>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px">
+    <ul style="padding-left: 0; text-align: left">
+      <li
+        *ngFor="let rect of rectangles; let i = index"
+        (click)="selectRectangle(rect.rectangleid)"
+        [class.selected]="rect.rectangleid === selectedRectangleId"
+      >
+        <div style="display: flex; align-items: center">
+          <span class="circle"></span>
+          <span style="margin-left: 10px"
+            >Rectangle {{ rect.rectangleid }}:</span
+          >
+        </div>
+        <ul style="padding-left: 20px">
+          <li>PA ({{ rect.pax }}, {{ rect.pay }})</li>
+          <li>PB ({{ rect.pbx }}, {{ rect.pby }})</li>
+          <li>PC ({{ rect.pcx }}, {{ rect.pcy }})</li>
+          <li>PD ({{ rect.pdx }}, {{ rect.pdy }})</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

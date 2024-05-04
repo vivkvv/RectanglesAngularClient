@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.svg-container {
+  flex: 1;
+  position: sticky;
+  top: 0;
+}
+
+.list-container {
+  flex: 1;
+  overflow-y: auto;
+  height: 90vh; /* Примерная высота, может быть изменена в зависимости от вашего дизайна */
+}
+
+/* CSS для удаления маркеров только для списка с классом 'no-markers' */
+.no-markers {
+  list-style: none;
+}
+
+ul {
+  list-style: none; /* Убирает стандартные маркеры списка */
+}
+
+.circle {
+  height: 10px;
+  width: 10px;
+  background-color: #000; /* Черный цвет кружка */
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.selected {
+  background-color: lightgreen; /* Выделение выбранного элемента */
+}
+
+li {
+  margin-bottom: 5px; /* Отступы между элементами списка */
+}
