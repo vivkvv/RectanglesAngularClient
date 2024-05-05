@@ -128,7 +128,6 @@ export class AppComponent implements OnInit {
     const payload = { x1: this.x1, y1: this.y1, x2: this.x2, y2: this.y2 };
     this.segment = payload;
     this.http
-      //.post<any>('http://localhost:8000/intersections/', payload)
       .post<any>(
         'https://web-39tdjwsgnot6.up-de-fra1-k8s-1.apps.run-on-seenode.com/intersections/',
         payload
