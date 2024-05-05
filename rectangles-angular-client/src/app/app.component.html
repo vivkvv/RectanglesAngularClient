@@ -2,11 +2,45 @@
   <div class="svg-container">
     <div style="text-align: center; margin-top: 50px">
       <h1>Enter Segment Coordinates</h1>
-      <input type="number" [(ngModel)]="x1" placeholder="x1" />
-      <input type="number" [(ngModel)]="y1" placeholder="y1" />
-      <input type="number" [(ngModel)]="x2" placeholder="x2" />
-      <input type="number" [(ngModel)]="y2" placeholder="y2" />
-      <button (click)="checkIntersections()">Check</button>
+
+      <div class="segment-row">
+        <div class="segment-point-container">
+          <label for="segment1" style="font-weight: bold"
+            >Segment Point 1</label
+          >
+          <input
+            type="number"
+            [(ngModel)]="x1"
+            placeholder="x1"
+            class="segment-input"
+          />
+          <input
+            type="number"
+            [(ngModel)]="y1"
+            placeholder="y1"
+            class="segment-input"
+          />
+        </div>
+
+        <div class="segment-point-container">
+          <label for="segment2" style="font-weight: bold"
+            >Segment Point 2</label
+          >
+          <input
+            type="number"
+            [(ngModel)]="x2"
+            placeholder="x2"
+            class="segment-input"
+          />
+          <input
+            type="number"
+            [(ngModel)]="y2"
+            placeholder="y2"
+            class="segment-input"
+          />
+        </div>
+        <button (click)="checkIntersections()">Check</button>
+      </div>
     </div>
 
     <div style="text-align: center">
@@ -21,6 +55,14 @@
           [attr.stroke]="
             rect.rectangleid === selectedRectangleId ? 'green' : 'blue'
           "
+          fill="transparent"
+          stroke-width="2"
+        ></polygon>
+
+        <polygon
+          *ngIf="selectedRectangleId !== null"
+          [attr.points]="scaledPoints(getSelectedRectangle())"
+          stroke="green"
           fill="transparent"
           stroke-width="2"
         ></polygon>
@@ -76,10 +118,10 @@
         </text>
 
         <line
-          [attr.x1]="scaleX(segment.x1)"
-          [attr.y1]="scaleY(segment.y1)"
-          [attr.x2]="scaleX(segment.x2)"
-          [attr.y2]="scaleY(segment.y2)"
+          [attr.x1]="scaleX(segment.start.x)"
+          [attr.y1]="scaleY(segment.start.y)"
+          [attr.x2]="scaleX(segment.end.x)"
+          [attr.y2]="scaleY(segment.end.y)"
           stroke="red"
           stroke-width="2"
         ></line>

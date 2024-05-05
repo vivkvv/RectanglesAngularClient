@@ -7,10 +7,10 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  x1: number = 0;
-  y1: number = 0;
-  x2: number = 0;
-  y2: number = 0;
+  x1: number = 10;
+  y1: number = 10;
+  x2: number = 15;
+  y2: number = 15;
 
   width = 400;
   height = 400;
@@ -39,7 +39,11 @@ export class AppComponent implements OnInit {
       pdy: 180,
     },
   ];
-  segment = { x1: 20, y1: 20, x2: 250, y2: 1500 };
+
+  segment = {
+    start: { x: 20, y: 20 },
+    end: { x: 250, y: 1500 },
+  };
 
   minX!: number;
   maxX!: number;
@@ -50,9 +54,12 @@ export class AppComponent implements OnInit {
 
   selectRectangle(id: number) {
     this.selectedRectangleId = this.selectedRectangleId === id ? null : id;
-    // this.rectangles = this.rectangles
-    //   .filter((rect) => rect.rectangleid !== id)
-    //   .concat(this.rectangles.filter((rect) => rect.rectangleid === id));
+  }
+
+  getSelectedRectangle() {
+    return this.rectangles.find(
+      (rect) => rect.rectangleid === this.selectedRectangleId
+    );
   }
 
   ngOnInit() {
@@ -62,10 +69,10 @@ export class AppComponent implements OnInit {
   calculateScale() {
     let allXs = this.rectangles
       .flatMap((rect) => [rect.pax, rect.pbx, rect.pcx, rect.pdx])
-      .concat([this.segment.x1, this.segment.x2]);
+      .concat([this.segment.start.x, this.segment.end.x]);
     let allYs = this.rectangles
       .flatMap((rect) => [rect.pay, rect.pby, rect.pcy, rect.pdy])
-      .concat([this.segment.y1, this.segment.y2]);
+      .concat([this.segment.start.y, this.segment.end.y]);
 
     this.minX = Math.min(...allXs);
     this.maxX = Math.max(...allXs);
@@ -75,10 +82,8 @@ export class AppComponent implements OnInit {
     let rangeX = this.maxX - this.minX;
     let rangeY = this.maxY - this.minY;
 
-    // Выбор наибольшего диапазона для масштабирования
     let maxRange = Math.max(rangeX, rangeY);
 
-    // Обновление максимальных X и Y для обеспечения одинакового масштаба
     this.maxX = this.minX + maxRange;
     this.maxY = this.minY + maxRange;
   }
@@ -86,22 +91,20 @@ export class AppComponent implements OnInit {
   calculateBounds() {
     let allXs = this.rectangles
       .flatMap((rect) => [rect.pax, rect.pbx, rect.pcx, rect.pdx])
-      .concat([this.segment.x1, this.segment.x2]);
+      .concat([this.segment.start.x, this.segment.end.x]);
     let allYs = this.rectangles
       .flatMap((rect) => [rect.pay, rect.pby, rect.pcy, rect.pdy])
-      .concat([this.segment.y1, this.segment.y2]);
+      .concat([this.segment.start.y, this.segment.end.y]);
 
     this.minX = Math.min(...allXs);
     this.maxX = Math.max(...allXs);
     this.minY = Math.min(...allYs);
     this.maxY = Math.max(...allYs);
 
-    // Выбор наибольшего диапазона для масштабирования
     let rangeX = this.maxX - this.minX;
     let rangeY = this.maxY - this.minY;
     let maxRange = Math.max(rangeX, rangeY);
 
-    // Обновление максимальных X и Y для обеспечения одинакового масштаба
     this.maxX = this.minX + maxRange;
     this.maxY = this.minY + maxRange;
   }
@@ -125,7 +128,10 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   checkIntersections() {
-    const payload = { x1: this.x1, y1: this.y1, x2: this.x2, y2: this.y2 };
+    const payload = {
+      start: { x: this.x1, y: this.y1 },
+      end: { x: this.x2, y: this.y2 },
+    };
     this.segment = payload;
     this.http
       .post<any>(
