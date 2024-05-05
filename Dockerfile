@@ -14,6 +14,8 @@ WORKDIR /app
 # Убедитесь, что путь к скомпилированным файлам соответствует пути сборки
 COPY --from=build-stage /app/dist/rectangles-angular-client /app/public
 
+RUN npm install -g serve@14.2.3
+
 # You can serve this using a simple static server or integrate with your existing backend
 EXPOSE 3000
 CMD ["npx", "serve", "/app/public"]
