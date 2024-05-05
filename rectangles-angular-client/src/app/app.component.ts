@@ -129,7 +129,7 @@ export class AppComponent implements OnInit {
     this.segment = payload;
     this.http
       .post<any>(
-        'https://web-39tdjwsgnot6.up-de-fra1-k8s-1.apps.run-on-seenode.com/intersections/',
+        'https://web-39tdjwsgnot6.up-de-fra1-k8s-1.apps.run-on-seenode.com/intersections',
         payload
       )
       .subscribe({
